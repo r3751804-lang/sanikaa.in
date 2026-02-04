@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Presence ✨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  font-family:'Poppins', sans-serif;
+  background:linear-gradient(135deg,#ffdee9,#b5fffc,#fff1eb,#fbc2eb,#a6c1ee);
+  background-size:400% 400%;
+  animation:bgMove 15s ease infinite;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+canvas{position:absolute;inset:0}
+
+/* Hint */
+.hint{
+  position:absolute;
+  bottom:14%;
+  width:100%;
+  text-align:center;
+  font-size:1.15rem;
+  color:#ff4d6d;
+  opacity:0.8;
+  animation:pulse 2s ease-in-out infinite;
+  pointer-events:none;
+}
+
+@keyframes pulse{
+  0%{opacity:0.3}
+  100%{opacity:0.9}
+}
+
+/* Final message */
+.message{
+  position:absolute;
+  bottom:18%;
+  width:100%;
+  text-align:center;
+  font-family:'Pacifico', cursive;
+  font-size:clamp(1.4rem,3vw,2rem);
+  color:#ff4d6d;
+  opacity:0;
+  transition:opacity 1.5s ease;
+  pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div class="hint" id="hint">✨ Touch or move slowly…</div>
+<div class="message" id="message">
+  Your love brings everyone together 🤍
+</div>
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const hint = document.getElementById("hint");
+const message = document.getElementById("message");
+
+let w,h;
+function resize(){
+  w = canvas.width = innerWidth;
+  h = canvas.height = innerHeight;
+}
+resize();
+addEventListener("resize",resize);
+
+let mouse={x:w/2,y:h/2,active:false};
+let calmTimer=null;
+
+/* Heart particles */
+class Heart{
+  constructor(){
+    this.baseX=Math.random()*w;
+    this.baseY=Math.random()*h;
+    this.x=this.baseX;
+    this.y=this.baseY;
+    this.size=16+Math.random()*10;
+    this.vx=0;this.vy=0;
+  }
+  update(){
+    const dx = mouse.x - this.x;
+    const dy = mouse.y - this.y;
+    const dist = Math.hypot(dx,dy);
+
+    if(dist < 140 && mouse.active){
+      const force = (140 - dist) / 140;
+      this.vx += dx/dist * force * 0.6;
+      this.vy += dy/dist * force * 0.6;
+
+      if(Math.random() < 0.015) spawnBalloon(this.x,this.y);
+    }else{
+      this.vx += (this.baseX - this.x) * 0.002;
+      this.vy += (this.baseY - this.y) * 0.002;
+    }
+
+    this.vx *= 0.85;
+    this.vy *= 0.85;
+    this.x += this.vx;
+    this.y += this.vy;
+  }
+  draw(){
+    ctx.font = `${this.size}px serif`;
+    ctx.globalAlpha = 0.75;
+    ctx.fillText("💖", this.x, this.y);
+    ctx.globalAlpha = 1;
+  }
+}
+
+/* Glow particles */
+class Glow{
+  constructor(){
+    this.x=Math.random()*w;
+    this.y=Math.random()*h;
+    this.vx=(Math.random()-0.5)*1.2;
+    this.vy=(Math.random()-0.5)*1.2;
+    this.r=2+Math.random()*2;
+  }
+  update(){
+    this.x+=this.vx;
+    this.y+=this.vy;
+    if(this.x<0||this.x>w||this.y<0||this.y>h){
+      this.x=Math.random()*w;
+      this.y=Math.random()*h;
+    }
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,77,109,0.6)";
+    ctx.fill();
+  }
+}
+
+/* Balloons */
+let balloons=[];
+function spawnBalloon(x,y){
+  balloons.push({x,y,vy:-1.3,alpha:1});
+}
+
+function drawBalloons(){
+  balloons.forEach((b,i)=>{
+    ctx.font="18px Pacifico";
+    ctx.globalAlpha=b.alpha;
+    ctx.fillText("🎈 I love you",b.x,b.y);
+    b.y+=b.vy;
+    b.alpha-=0.01;
+    if(b.alpha<=0) balloons.splice(i,1);
+  });
+  ctx.globalAlpha=1;
+}
+
+const hearts=[...Array(30)].map(()=>new Heart());
+const glows=[...Array(45)].map(()=>new Glow());
+
+function animate(){
+  ctx.clearRect(0,0,w,h);
+  glows.forEach(g=>{g.update();g.draw()});
+  hearts.forEach(h=>{h.update();h.draw()});
+  drawBalloons();
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* Interaction */
+function interact(x,y){
+  mouse.x=x;
+  mouse.y=y;
+  mouse.active=true;
+  hint.style.display="none";
+  message.style.opacity=0;
+
+  clearTimeout(calmTimer);
+  calmTimer=setTimeout(()=>{
+    mouse.active=false;
+    message.style.opacity=1;
+  },3000);
+}
+
+addEventListener("mousemove",e=>interact(e.clientX,e.clientY));
+addEventListener("touchmove",e=>{
+  interact(e.touches[0].clientX,e.touches[0].clientY);
+},{passive:true});
+</script>
+
+</body>
+</html>
