@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Sanika 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  font-family:'Poppins', sans-serif;
+  background:linear-gradient(135deg,#ffdee9,#b5fffc,#fff1eb,#fbc2eb,#a6c1ee);
+  background-size:400% 400%;
+  animation:bgMove 15s ease infinite;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* Fade wrapper */
+.page{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:opacity 0.8s ease, transform 0.8s ease;
+}
+
+.page.fade-out{
+  opacity:0;
+  transform:translateY(-30px);
+}
+
+/* Background name */
+.name-bg{
+  position:absolute;
+  inset:0;
+  font-family:'Pacifico', cursive;
+  font-size:5rem;
+  color:rgba(255,255,255,0.25);
+  display:flex;
+  flex-wrap:wrap;
+  align-content:space-around;
+  justify-content:space-around;
+  pointer-events:none;
+}
+
+.container{
+  background:rgba(255,255,255,0.55);
+  backdrop-filter:blur(10px);
+  padding:50px 60px;
+  border-radius:25px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.15);
+  z-index:2;
+}
+
+h1{
+  font-family:'Pacifico', cursive;
+  font-size:clamp(2.2rem,4vw,3.2rem);
+  color:#ff4d6d;
+  margin-bottom:40px;
+}
+
+.buttons{position:relative;height:120px}
+
+button{
+  border:none;
+  padding:14px 36px;
+  font-size:1.05rem;
+  border-radius:50px;
+  cursor:pointer;
+}
+
+#yes{
+  background:#ff4d6d;
+  color:white;
+  box-shadow:0 10px 20px rgba(255,77,109,0.4);
+}
+
+#no{
+  background:#ffd6e0;
+  color:#444;
+  position:absolute;
+  left:55%;
+}
+
+.heart{
+  position:absolute;
+  font-size:22px;
+  opacity:0.6;
+  animation:floatUp 10s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes floatUp{
+  from{transform:translateY(110vh);opacity:0}
+  to{transform:translateY(-10vh);opacity:0.8}
+}
+</style>
+</head>
+
+<body>
+
+<div class="page" id="page">
+
+  <div class="name-bg">
+    <span>Sanika</span><span>Sanika</span><span>Sanika</span>
+    <span>Sanika</span><span>Sanika</span><span>Sanika</span>
+  </div>
+
+  <div class="container">
+    <h1>Sanika, will you be my Valentine? 💘</h1>
+    <div class="buttons">
+      <button id="yes">Yes 💖</button>
+      <button id="no">No 🙈</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const page = document.getElementById("page");
+
+noBtn.addEventListener("mouseenter",()=>{
+  noBtn.style.position="fixed";
+  noBtn.style.left=Math.random()*(innerWidth-120)+"px";
+  noBtn.style.top=Math.random()*(innerHeight-120)+"px";
+});
+
+yesBtn.addEventListener("click",()=>{
+  page.classList.add("fade-out");
+  setTimeout(()=>{
+    window.location.href="gifts.html";
+  },800);
+});
+
+function heart(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML=Math.random()>0.5?"💖":"💗";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=6+Math.random()*6+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),12000);
+}
+setInterval(heart,400);
+</script>
+
+</body>
+</html>
