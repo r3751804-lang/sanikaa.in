@@ -28,7 +28,7 @@ body{
   100%{background-position:0% 50%}
 }
 
-/* Page transition */
+/* PAGE TRANSITION */
 .page{
   width:100%;
   height:100%;
@@ -40,17 +40,15 @@ body{
   animation:fadeIn 0.9s ease forwards;
   transition:opacity 0.6s ease, transform 0.6s ease;
 }
-
 .page.fade-out{
   opacity:0;
   transform:translateY(-30px);
 }
-
 @keyframes fadeIn{
   to{opacity:1;transform:translateY(0)}
 }
 
-/* Background name */
+/* BACKGROUND NAME */
 .name-bg{
   position:absolute;
   inset:0;
@@ -64,6 +62,7 @@ body{
   pointer-events:none;
 }
 
+/* CARD */
 .container{
   background:rgba(255,255,255,0.6);
   backdrop-filter:blur(10px);
@@ -81,30 +80,42 @@ h1{
   margin-bottom:40px;
 }
 
+/* GIFTS */
 .gifts{
   display:flex;
-  gap:30px;
+  gap:28px;
   justify-content:center;
 }
 
 .gift{
-  width:110px;
-  height:110px;
-  border-radius:20px;
-  background:white;
-  font-size:3rem;
+  width:140px;
+  height:160px;
+  border-radius:22px;
+  background:rgba(255,255,255,0.85);
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  transition:0.3s ease;
+  transition:0.35s ease;
+  box-shadow:0 15px 30px rgba(0,0,0,0.15);
 }
 
 .gift:hover{
-  transform:translateY(-10px) scale(1.05);
+  transform:translateY(-12px) scale(1.05);
 }
 
-/* Floating hearts & roses */
+.gift span{
+  font-size:3rem;
+}
+
+.gift p{
+  margin-top:12px;
+  font-size:0.9rem;
+  color:#ff4d6d;
+}
+
+/* FLOATING ELEMENTS */
 .float{
   position:absolute;
   pointer-events:none;
@@ -135,12 +146,23 @@ h1{
   </div>
 
   <div class="container">
-    <h1>Here are small gestures you may like 💝</h1>
+    <h1>Here are small gestures for you 💝</h1>
 
     <div class="gifts">
-      <div class="gift" id="gift1">🎁</div>
-      <div class="gift">🎁</div>
-      <div class="gift">🎁</div>
+      <div class="gift" id="gift1">
+        <span>🎁</span>
+        <p>Something about you</p>
+      </div>
+
+      <div class="gift" id="gift2">
+        <span>✨</span>
+        <p>Your magic</p>
+      </div>
+
+      <div class="gift" id="gift3">
+        <span>💌</span>
+        <p>A little forever</p>
+      </div>
     </div>
   </div>
 
@@ -148,19 +170,17 @@ h1{
 
 <script>
 const page = document.getElementById("page");
-const gift1 = document.getElementById("gift1");
 
-/* Gift 1 navigation */
-gift1.addEventListener("click",()=>{
+function goTo(url){
   page.classList.add("fade-out");
-  setTimeout(()=>{
-    window.location.href="gift1.html";
-    window.location.href="gift2.html";
-    window.location.href="gift3.html";
-  },600);
-});
+  setTimeout(()=>{ window.location.href = url; },600);
+}
 
-/* Floating elements */
+document.getElementById("gift1").onclick = ()=>goTo("gift1.html");
+document.getElementById("gift2").onclick = ()=>goTo("gift2.html");
+document.getElementById("gift3").onclick = ()=>goTo("gift3.html");
+
+/* FLOATING HEARTS & ROSES */
 function createFloating(type){
   const el = document.createElement("div");
   el.className = "float";
@@ -172,10 +192,9 @@ function createFloating(type){
   setTimeout(()=>el.remove(),15000);
 }
 
-setInterval(()=>createFloating("heart"),350);
-setInterval(()=>createFloating("rose"),1200);
+setInterval(()=>createFloating("heart"),400);
+setInterval(()=>createFloating("rose"),1300);
 </script>
 
 </body>
 </html>
-
