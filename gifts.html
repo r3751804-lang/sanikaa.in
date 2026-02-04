@@ -28,7 +28,7 @@ body{
   100%{background-position:0% 50%}
 }
 
-/* Page fade-in */
+/* Page transition */
 .page{
   width:100%;
   height:100%;
@@ -38,6 +38,12 @@ body{
   opacity:0;
   transform:translateY(30px);
   animation:fadeIn 0.9s ease forwards;
+  transition:opacity 0.6s ease, transform 0.6s ease;
+}
+
+.page.fade-out{
+  opacity:0;
+  transform:translateY(-30px);
 }
 
 @keyframes fadeIn{
@@ -98,7 +104,7 @@ h1{
   transform:translateY(-10px) scale(1.05);
 }
 
-/* Floating elements */
+/* Floating hearts & roses */
 .float{
   position:absolute;
   pointer-events:none;
@@ -121,7 +127,7 @@ h1{
 
 <body>
 
-<div class="page">
+<div class="page" id="page">
 
   <div class="name-bg">
     <span>Sanika</span><span>Sanika</span><span>Sanika</span>
@@ -132,7 +138,7 @@ h1{
     <h1>Here are small gestures you may like 💝</h1>
 
     <div class="gifts">
-      <div class="gift">🎁</div>
+      <div class="gift" id="gift1">🎁</div>
       <div class="gift">🎁</div>
       <div class="gift">🎁</div>
     </div>
@@ -141,25 +147,31 @@ h1{
 </div>
 
 <script>
+const page = document.getElementById("page");
+const gift1 = document.getElementById("gift1");
+
+/* Gift 1 navigation */
+gift1.addEventListener("click",()=>{
+  page.classList.add("fade-out");
+  setTimeout(()=>{
+    window.location.href="gift1.html";
+  },600);
+});
+
+/* Floating elements */
 function createFloating(type){
   const el = document.createElement("div");
   el.className = "float";
   el.innerHTML = type === "heart" ? "💖" : "🤍";
-
   el.style.left = Math.random()*100 + "vw";
   el.style.fontSize = (type === "heart" ? 18 : 20) + Math.random()*12 + "px";
   el.style.animationDuration = (type === "heart" ? 6 : 10) + Math.random()*6 + "s";
-
   document.body.appendChild(el);
-
   setTimeout(()=>el.remove(),15000);
 }
 
-/* Hearts (more frequent) */
-setInterval(()=>createFloating("heart"), 350);
-
-/* White roses (less frequent, elegant) */
-setInterval(()=>createFloating("rose"), 1200);
+setInterval(()=>createFloating("heart"),350);
+setInterval(()=>createFloating("rose"),1200);
 </script>
 
 </body>
