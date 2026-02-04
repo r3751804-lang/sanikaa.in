@@ -83,36 +83,25 @@ h1{
 /* GIFTS */
 .gifts{
   display:flex;
-  gap:28px;
+  gap:30px;
   justify-content:center;
 }
 
 .gift{
-  width:140px;
-  height:160px;
-  border-radius:22px;
-  background:rgba(255,255,255,0.85);
+  width:110px;
+  height:110px;
+  border-radius:20px;
+  background:white;
+  font-size:3rem;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  transition:0.35s ease;
-  box-shadow:0 15px 30px rgba(0,0,0,0.15);
+  transition:0.3s ease;
 }
 
 .gift:hover{
-  transform:translateY(-12px) scale(1.05);
-}
-
-.gift span{
-  font-size:3rem;
-}
-
-.gift p{
-  margin-top:12px;
-  font-size:0.9rem;
-  color:#ff4d6d;
+  transform:translateY(-10px) scale(1.05);
 }
 
 /* FLOATING ELEMENTS */
@@ -146,41 +135,39 @@ h1{
   </div>
 
   <div class="container">
-    <h1>Here are small gestures for you 💝</h1>
+    <h1>Here are small gestures you may like 💝</h1>
 
     <div class="gifts">
-      <div class="gift" id="gift1">
-        <span>🎁</span>
-        <p>Something about you</p>
-      </div>
-
-      <div class="gift" id="gift2">
-        <span>✨</span>
-        <p>Your magic</p>
-      </div>
-
-      <div class="gift" id="gift3">
-        <span>💌</span>
-        <p>A little forever</p>
-      </div>
+      <div class="gift" id="gift1">🎁</div>
+      <div class="gift" id="gift2">🎁</div>
+      <div class="gift" id="gift3">🎁</div>
     </div>
   </div>
 
 </div>
 
 <script>
+/* PAGE */
 const page = document.getElementById("page");
 
+/* GIFTS */
+const gift1 = document.getElementById("gift1");
+const gift2 = document.getElementById("gift2");
+const gift3 = document.getElementById("gift3");
+
+/* NAVIGATION */
 function goTo(url){
   page.classList.add("fade-out");
-  setTimeout(()=>{ window.location.href = url; },600);
+  setTimeout(()=>{
+    window.location.href = url;
+  },600);
 }
 
-document.getElementById("gift1").onclick = ()=>goTo("gift1.html");
-document.getElementById("gift2").onclick = ()=>goTo("gift2.html");
-document.getElementById("gift3").onclick = ()=>goTo("gift3.html");
+gift1.addEventListener("click",()=>goTo("gift1.html"));
+gift2.addEventListener("click",()=>goTo("gift2.html"));
+gift3.addEventListener("click",()=>goTo("gift3.html"));
 
-/* FLOATING HEARTS & ROSES */
+/* HEARTS & ROSES */
 function createFloating(type){
   const el = document.createElement("div");
   el.className = "float";
@@ -192,8 +179,8 @@ function createFloating(type){
   setTimeout(()=>el.remove(),15000);
 }
 
-setInterval(()=>createFloating("heart"),400);
-setInterval(()=>createFloating("rose"),1300);
+setInterval(()=>createFloating("heart"),350);
+setInterval(()=>createFloating("rose"),1200);
 </script>
 
 </body>
