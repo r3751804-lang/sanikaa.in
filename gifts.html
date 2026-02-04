@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Small Gestures 💝</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  font-family:'Poppins', sans-serif;
+  background:linear-gradient(135deg,#ffdee9,#b5fffc,#fff1eb,#fbc2eb,#a6c1ee);
+  background-size:400% 400%;
+  animation:bgMove 15s ease infinite;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* Page fade-in */
+.page{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transform:translateY(30px);
+  animation:fadeIn 0.9s ease forwards;
+}
+
+@keyframes fadeIn{
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Background name */
+.name-bg{
+  position:absolute;
+  inset:0;
+  font-family:'Pacifico', cursive;
+  font-size:5rem;
+  color:rgba(255,255,255,0.22);
+  display:flex;
+  flex-wrap:wrap;
+  align-content:space-around;
+  justify-content:space-around;
+  pointer-events:none;
+}
+
+.container{
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(10px);
+  padding:50px 60px;
+  border-radius:25px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.15);
+  z-index:2;
+}
+
+h1{
+  font-family:'Pacifico', cursive;
+  font-size:clamp(2rem,4vw,3rem);
+  color:#ff4d6d;
+  margin-bottom:40px;
+}
+
+.gifts{
+  display:flex;
+  gap:30px;
+  justify-content:center;
+}
+
+.gift{
+  width:110px;
+  height:110px;
+  border-radius:20px;
+  background:white;
+  font-size:3rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:0.3s ease;
+}
+
+.gift:hover{
+  transform:translateY(-10px) scale(1.05);
+}
+
+/* Floating elements */
+.float{
+  position:absolute;
+  pointer-events:none;
+  opacity:0.6;
+  animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+  from{
+    transform:translateY(110vh) scale(0.8);
+    opacity:0;
+  }
+  to{
+    transform:translateY(-10vh) scale(1.2);
+    opacity:0.8;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <div class="name-bg">
+    <span>Sanika</span><span>Sanika</span><span>Sanika</span>
+    <span>Sanika</span><span>Sanika</span><span>Sanika</span>
+  </div>
+
+  <div class="container">
+    <h1>Here are small gestures you may like 💝</h1>
+
+    <div class="gifts">
+      <div class="gift">🎁</div>
+      <div class="gift">🎁</div>
+      <div class="gift">🎁</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function createFloating(type){
+  const el = document.createElement("div");
+  el.className = "float";
+  el.innerHTML = type === "heart" ? "💖" : "🤍";
+
+  el.style.left = Math.random()*100 + "vw";
+  el.style.fontSize = (type === "heart" ? 18 : 20) + Math.random()*12 + "px";
+  el.style.animationDuration = (type === "heart" ? 6 : 10) + Math.random()*6 + "s";
+
+  document.body.appendChild(el);
+
+  setTimeout(()=>el.remove(),15000);
+}
+
+/* Hearts (more frequent) */
+setInterval(()=>createFloating("heart"), 350);
+
+/* White roses (less frequent, elegant) */
+setInterval(()=>createFloating("rose"), 1200);
+</script>
+
+</body>
+</html>
