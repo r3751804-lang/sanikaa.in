@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 🤍</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  font-family:'Poppins', sans-serif;
+  background:linear-gradient(135deg,#ffdee9,#b5fffc,#fff1eb,#fbc2eb,#a6c1ee);
+  background-size:400% 400%;
+  animation:bgMove 15s ease infinite;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* FLOATING HEARTS */
+.heart{
+  position:absolute;
+  bottom:-40px;
+  font-size:18px;
+  opacity:0.6;
+  animation:floatUp linear infinite;
+  pointer-events:none;
+}
+@keyframes floatUp{
+  to{transform:translateY(-120vh) scale(1.4);opacity:0}
+}
+
+/* LAYOUT */
+.wrapper{
+  display:flex;
+  gap:28px;
+  z-index:2;
+}
+
+/* SLIDESHOW */
+.card{
+  width:320px;
+  height:420px;
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(12px);
+  border-radius:24px;
+  padding:15px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.2);
+}
+.slideshow{
+  position:relative;
+  width:100%;
+  height:100%;
+  border-radius:18px;
+  overflow:hidden;
+}
+.slideshow img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transition:opacity 1s ease;
+}
+.slideshow img.active{opacity:1}
+
+/* LETTER */
+.letter-box{
+  width:340px;
+  position:relative;
+}
+
+/* ENVELOPE */
+.envelope{
+  background:#fff;
+  border-radius:18px;
+  padding:20px;
+  text-align:center;
+  cursor:pointer;
+  box-shadow:0 15px 30px rgba(0,0,0,0.2);
+  z-index:1;
+}
+.envelope span{font-size:2.4rem}
+
+/* PAPER (FIXED) */
+.paper{
+  position:absolute;
+  top:-10px;
+  left:0;
+  width:100%;
+  max-height:460px;
+  background:#fff;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.35);
+  transform:translateY(140px);
+  opacity:0;
+  transition:0.8s ease;
+  overflow-y:auto;
+  z-index:5;
+}
+.paper.show{
+  transform:translateY(0);
+  opacity:1;
+}
+.paper h3{
+  font-family:'Pacifico', cursive;
+  color:#ff4d6d;
+  margin-bottom:12px;
+  text-align:center;
+}
+.paper p{
+  font-size:0.95rem;
+  line-height:1.7;
+  color:#333;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEARTS -->
+<script>
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=6+Math.random()*6+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),12000);
+},600);
+</script>
+
+<div class="wrapper">
+
+  <div class="card">
+    <div class="slideshow" id="slideshow"></div>
+  </div>
+
+  <div class="letter-box">
+    <div class="envelope" id="openLetter"><span>✉️</span></div>
+
+    <div class="paper" id="paper">
+      <h3>For You 🤍</h3>
+      <p>
+        Baby girl,<br><br>
+        You walked into my life quietly, and somehow everything started making more sense.
+        In the chaos of my days, you became the calm I didn’t know I was searching for.
+        Your smile fixes parts of me I never spoke about, without even trying.
+        With you, even ordinary moments feel like memories worth keeping forever.
+        I don’t promise perfection, but I promise honesty, effort, and a heart that chooses you every day.
+        No matter where life takes us, my hand will always look for yours.
+        You are not just someone I love—you are where my soul feels at home.
+        i love you so much!!!♥ ♥ 
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* LOAD ALL PHOTOS SAFELY */
+const slideshow=document.getElementById("slideshow");
+let slides=[],idx=0,num=1,failCount=0;
+
+function load(){
+  const img=new Image();
+  img.src=`photo${num}.jpg`;
+
+  img.onload=()=>{
+    img.className=slides.length===0?"active":"";
+    slideshow.appendChild(img);
+    slides.push(img);
+    num++;
+    failCount=0;
+    load();
+  };
+
+  img.onerror=()=>{
+    failCount++;
+    if(failCount<3){ num++; load(); }
+  };
+}
+load();
+
+/* SLIDESHOW */
+setInterval(()=>{
+  if(slides.length<2) return;
+  slides[idx].classList.remove("active");
+  idx=(idx+1)%slides.length;
+  slides[idx].classList.add("active");
+},3200);
+
+/* LETTER */
+document.getElementById("openLetter").onclick=()=>{
+  document.getElementById("paper").classList.add("show");
+};
+</script>
+
+</body>
+</html>
